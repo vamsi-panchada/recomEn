@@ -1,11 +1,14 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
+from djangoProject import settings
+import os
 
 import pandas as pd
 
 def getRecom1(user_id, loc):
-    df_cust = pd.read_csv('category_pattern.csv')
-    df_loc = pd.read_csv('mapping_btw_local_trenda_and_coupons.csv')
+    # os.system('pwd')
+    df_cust = pd.read_csv(os.path.join(settings.BASE_DIR, 'category_pattern.csv'))
+    df_loc = pd.read_csv(os.path.join(settings.BASE_DIR, 'mapping_btw_local_trenda_and_coupons.csv'))
     user_cat = df_cust[df_cust['USER_ID']==user_id].sort_values('rank', ascending=False)['MERCHANT_CATEGORY'].to_list()
     user_cat = user_cat[0: len(user_cat) if len(user_cat)<=3 else 4]
     merchs = df_loc[df_loc['LOCATION']==loc]
@@ -25,4 +28,4 @@ def detail(request):
     id = request.GET.get('id')
     location = request.GET.get('location')
 
-    return JsonResponse(getRecom1(int(id),location))
+    return JsonResponse(getRecom1(int(id),location), safe=False)
