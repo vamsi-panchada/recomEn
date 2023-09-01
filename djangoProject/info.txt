@@ -1,0 +1,9 @@
+http://127.0.0.1:8000/detail/?id=1&name=dixit&gender=male
+customize url
+
+http://127.0.0.1:8000
+Base URL (default)
+
+http://127.0.0.1:8000/admin
+admin site
+
