@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from djangoProject import settings
 import os
+import json
 
 import pandas as pd
 
@@ -13,7 +14,7 @@ def getRecom1(user_id, loc):
     user_cat = user_cat[0: len(user_cat) if len(user_cat)<=3 else 4]
     merchs = df_loc[df_loc['LOCATION']==loc]
     merchs = merchs[merchs['MERCHANT_CATEGORY'].isin(user_cat)]
-    return merchs.groupby('MERCHANT_CATEGORY').head(2).reset_index(drop=True)[['MERCHANT_CATEGORY', 'MERCHANT_NAME', 'coupon', 'desc']].to_json()
+    return json.loads(merchs.groupby('MERCHANT_CATEGORY').head(2).reset_index(drop=True)[['MERCHANT_CATEGORY', 'MERCHANT_NAME', 'coupon', 'desc']].to_json())
 
 def index(request):
     data = {
@@ -27,5 +28,7 @@ def index(request):
 def detail(request):
     id = request.GET.get('id')
     location = request.GET.get('location')
+
+    print(getRecom1(int(id),location))
 
     return JsonResponse(getRecom1(int(id),location), safe=False)
