@@ -17,7 +17,8 @@ def getRecom1(user_id, loc):
     merchs = df_loc[df_loc['LOCATION']==loc]
     merchs = merchs[merchs['MERCHANT_CATEGORY'].isin(user_cat)]
     resp = merchs.groupby('MERCHANT_CATEGORY').head(2).reset_index(drop=True)[['MERCHANT_CATEGORY', 'MERCHANT_NAME', 'coupon', 'desc']]
-    resp = df_hot.sample(4)[['MERCHANT_CATEGORY', 'MERCHANT_NAME', 'coupon', 'desc']]._append(resp, ignore_index=True)
+    # resp = df_hot.sample(4)[['MERCHANT_CATEGORY', 'MERCHANT_NAME', 'coupon', 'desc']]._append(resp, ignore_index=True)
+    resp = pd.concat([df_hot.sample(4)[['MERCHANT_CATEGORY', 'MERCHANT_NAME', 'coupon', 'desc']], resp], axis=0, ignore_index=True)
     # print(df_hot)
     # print(resp)
     return json.loads(resp.to_json())
