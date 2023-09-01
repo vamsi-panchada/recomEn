@@ -25,4 +25,4 @@ def detail(request):
     id = request.GET.get('id')
     location = request.GET.get('location')
 
-    return JsonResponse(getRecom1(id,location))
+    return JsonResponse(getRecom1(int(id),location))
