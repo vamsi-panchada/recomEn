@@ -43,6 +43,14 @@ def detail(request):
 
     return JsonResponse(getRecom1(int(id),location), safe=False)
 
+def functi(user_id):
+    df_merch_offer = pd.read_csv(os.path.join(settings.BASE_DIR, 'merchant_offer_mapper.csv'))
+    df_user_pref = pd.read_csv(os.path.join(settings.BASE_DIR, 'user_pref.csv'))
+    df_user_pref = df_user_pref[df_user_pref['USER_ID']==user_id].sort_values('MERCHANT_COUNT').iloc[:3]['MERCHANT_ID'].values
+
+    df_merch = json.loads(df_merch_offer[df_merch_offer['MERCHANT_ID'].isin(df_user_pref)].to_json())
+    return df_merch
+
 
 def newoffer(request):
     user_id = request.GET.get('user_id')
@@ -51,8 +59,9 @@ def newoffer(request):
     data = {
             "MERCHANT_CATEGORY" : {"0" : "FOOD"},
             "MERCHANT_NAME": {"0": "DOMINOS"},
-            "coupen": {"0": "69LTX68ILU"},
-            "desc":{"0": "Get up to 9% off with HDFC"}
+            "COUPON": {"0": "69LTX68ILU"},
+            "DESC":{"0": "Get up to 9% off with HDFC"}
         }
 
-    return JsonResponse(data)
+
+    return JsonResponse(functi(int(user_id)),safe=False)
