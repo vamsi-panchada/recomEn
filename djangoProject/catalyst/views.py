@@ -46,9 +46,9 @@ def detail(request):
 def functi(user_id):
     df_merch_offer = pd.read_csv(os.path.join(settings.BASE_DIR, 'merchant_offer_mapper.csv'))
     df_user_pref = pd.read_csv(os.path.join(settings.BASE_DIR, 'user_pref.csv'))
-    df_user_pref = df_user_pref[df_user_pref['USER_ID']==user_id].sort_values('MERCHANT_COUNT').iloc[:3]['MERCHANT_ID'].values
+    df_user_pref = df_user_pref[df_user_pref['USER_ID']==user_id].sort_values('MERCHANT_COUNT')['MERCHANT_ID'].values
 
-    df_merch = json.loads(df_merch_offer[df_merch_offer['MERCHANT_ID'].isin(df_user_pref)].to_json())
+    df_merch = json.loads(df_merch_offer[df_merch_offer['MERCHANT_ID'].isin(df_user_pref)].sample(1).to_json())
     return df_merch
 
 
