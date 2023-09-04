@@ -42,3 +42,17 @@ def detail(request):
     # print(getRecom1(int(id),location))
 
     return JsonResponse(getRecom1(int(id),location), safe=False)
+
+
+def newoffer(request):
+    user_id = request.GET.get('user_id')
+
+    #dummy
+    data = {
+            "MERCHANT_CATEGORY" : {"0" : "FOOD"},
+            "MERCHANT_NAME": {"0": "DOMINOS"},
+            "coupen": {"0": "69LTX68ILU"},
+            "desc":{"0": "Get up to 9% off with HDFC"}
+        }
+
+    return JsonResponse(data)
